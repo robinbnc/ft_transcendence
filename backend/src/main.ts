@@ -1,10 +1,12 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 import { ValidatorOptions, ValidationError } from 'class-validator';
 import BackendException from './utils/BackendException.filter'
+import { UserService } from './user/user.service';
+import { usersTest } from "./user/test";
+import {PrismaService} from "./prisma/prisma.service"
 var passport = require('passport');
 
 export interface ValidationPipeOptions extends ValidatorOptions {
@@ -12,6 +14,19 @@ export interface ValidationPipeOptions extends ValidatorOptions {
   disableErrorMessages?: boolean;
   forbidUnknownValues?: boolean;
   exceptionFactory?: (errors: ValidationError[]) => any;
+}
+
+async function createTestUsers() {
+	const prisma = new PrismaService();
+	const userService: UserService = new UserService(prisma);
+
+	usersTest.forEach(async (user) => {
+		let newUser = await userService.user({username: user.username});
+		if (!newUser) {
+			newUser = await userService.createUser(user);
+			userService.generateTwoFactorAuthenticationSecret(newUser);
+		}
+	})
 }
 
 async function bootstrap() {
@@ -31,7 +46,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
+  await createTestUsers();
   await app.listen(3000);
 }
 bootstrap();

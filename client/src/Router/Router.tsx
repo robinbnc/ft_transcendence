@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes, Outlet } from "react-router-dom";
 import Login from "../Pages/Auth/Login";
+import SignUp from "../Pages/Auth/SignUp";
 import ConnectedUsers from "../Pages/Dashboard/ConnectedUsers";
 import Dashboard from "../Pages/Dashboard/Dashboard";
 import PrimarySearchAppBar from "../Components/TopBar";
@@ -76,6 +77,7 @@ export default function Router() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<SignUp />} />
       <Route path="/400" element={<BadRequestPage />} />
       <Route path="/authenticator" element={<TfaAuth />} />
       <Route element={<PersistLogin />}>

@@ -15,11 +15,13 @@ import { JwtRefreshAuthGuard } from './jwt-refresh-auth.guard';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { Jwt2faGuard } from './jwt-2fa.guard';
 import { FtOauthGuard } from './ftAuth.guard';
+import { UserService } from 'src/user/user.service';
 
 @Controller('auth')
 export class AuthController {
 	constructor(
-		private authService: AuthService
+		private authService: AuthService,
+		private userService: UserService
 	) { }
 
 	@UseGuards(LocalAuthGuard)

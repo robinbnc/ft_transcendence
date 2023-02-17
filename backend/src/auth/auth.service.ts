@@ -7,7 +7,6 @@ import {authenticator} from 'otplib'
 import jwt from 'jsonwebtoken';
 import jwt_decode from "jwt-decode";
 
-
 @Injectable()
 export class AuthService {
 	constructor(
